@@ -9,7 +9,7 @@ import { bookingRouter } from './routes/bookingRouter.js';
 dotenv['config']();
 const app = a3a();
 app.use(a3b({
-  origin: "https://homely1.netlify.app",
+  origin: process.env.ORIGIN_ACCESS_URL,
   credentials: true
 }));app['use'](a3a['json']({ 'limit': '100mb' })), app['use'](a3a['urlencoded']({
     'limit': '100mb',
