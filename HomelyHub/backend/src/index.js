@@ -13,11 +13,21 @@ const app = a3a();
 
 // CORS configuration for Netlify + cookies
 app.use(a3b({
-  origin: ['https://homely1.netlify.app', 'http://localhost:5173'],
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
+  origin: function (origin, callback) {
+    const allowed = [
+      "https://homely1.netlify.app",
+    ];
+
+    // Allow all Netlify preview subdomains
+    if (!origin || origin.endsWith(".netlify.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
 }));
+
 
 app.use(a3a.json({ limit: '100mb' }));
 app.use(a3a.urlencoded({
