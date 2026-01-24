@@ -59,7 +59,11 @@ const signinToken = a => {
                 'message': f['message']
             });
         }
+<<<<<<< HEAD
     }, logout = (a, b) => {
+=======
+}, logout = (a, b) => {
+>>>>>>> d457bca2008b960ea38ec51b1ea62d61ad0a6270
     const c = {
         expires: new Date(0),
         httpOnly: true,
@@ -74,7 +78,11 @@ const signinToken = a => {
         message: 'Logged out successfully'
     });
 },
+<<<<<<< HEAD
 protect = async (a, b, c) => {
+=======
+ protect = async (a, b, c) => {
+>>>>>>> d457bca2008b960ea38ec51b1ea62d61ad0a6270
         try {
             let d;
             if (a['headers']['authorization'] && a['headers']['authorization']['startsWith']('Bearer'))
