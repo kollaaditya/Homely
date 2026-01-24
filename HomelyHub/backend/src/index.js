@@ -8,10 +8,10 @@ import { propertyRouter } from './routes/propertyRouter.js';
 import { bookingRouter } from './routes/bookingRouter.js';
 dotenv['config']();
 const app = a3a();
-app['use'](a3b({
-    'origin': process['env']['ORIGIN_ACCESS_URL'],
-    'credentials': !![]
-})), app['use'](a3a['json']({ 'limit': '100mb' })), app['use'](a3a['urlencoded']({
+app.use(a3b({
+  origin: "https://homely1.netlify.app",
+  credentials: true
+})); app['use'](a3a['json']({ 'limit': '100mb' })), app['use'](a3a['urlencoded']({
     'limit': '100mb',
     'extended': !![]
 })), app['use'](a3c());
