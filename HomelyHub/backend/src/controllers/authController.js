@@ -11,10 +11,10 @@ const signinToken = a => {
         return a0a['sign']({ 'id': a }, process['env']['JWT_SECRET'], { 'expiresIn': process['env']['JWT_EXPIRES_IN'] });
     }, createSendToken = (a, b, c) => {
         const d = signinToken(a['_id']), e = {
-                'expires': new Date(Date['now']() + process['env']['JWT_COOKIE_EXPIRES_IN'] * 0x18 * 0x3c * 0x3c * 0x3e8),
-                'httpOnly': !![],
-                'sameSite': process['env']['NODE_ENV'] === 'production' ? 'none' : 'lax',
-                'secure': process['env']['NODE_ENV'] === 'production'
+                'expires': new Date(Date['now']() + process['env']['JWT_COOKIE_EXPIRES_IN'] * 24 * 60 * 60 * 1000),
+                'httpOnly': true,
+                'sameSite': "none",
+                'secure': true
             };
         c['cookie']('jwt', d, e), a['password'] = undefined, c['status'](b)['json']({
             'status': 'Success',
@@ -60,22 +60,27 @@ const signinToken = a => {
             });
         }
     }, logout = (a, b) => {
-        const c = {
-            'expires': new Date(0x0),
-            'httpOnly': !![],
-            'path': '/'
-        };
-        process['env']['NODE_ENV'] === 'production' ? (c['sameSite'] = 'none', c['secure'] = !![]) : (c['sameSite'] = 'lax', c['secure'] = ![]), b['cookie']('jwt', '', c), b['status'](0xc8)['json']({
-            'status': 'success',
-            'message': 'Logged\x20out\x20successfully'
-        });
-    }, protect = async (a, b, c) => {
+    const c = {
+        expires: new Date(0),
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/"
+    };
+
+    b.cookie('jwt', '', c);
+    b.status(200).json({
+        status: 'success',
+        message: 'Logged out successfully'
+    });
+},
+protect = async (a, b, c) => {
         try {
             let d;
             if (a['headers']['authorization'] && a['headers']['authorization']['startsWith']('Bearer'))
                 d = a['headers']['authorization']['split']('\x20')[0x1];
-            else
-                a['cookies']['jwt'] && a['cookies']['jwt'] !== 'loggedout' && (d = a['cookies']['jwt']);
+            else if (a['cookies']['jwt'] && a['cookies']['jwt'] !== 'loggedout')
+                d = a['cookies']['jwt'];
             if (!d)
                 throw new Error('You\x20are\x20not\x20logged\x20in!!\x20Please\x20login\x20to\x20access');
             const e = await promisify(a0a['verify'])(d, process['env']['JWT_SECRET']), f = await User['findById'](e['id']);

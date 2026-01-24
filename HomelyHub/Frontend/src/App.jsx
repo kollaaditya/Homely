@@ -22,7 +22,15 @@ import AccomodationForm from "./components/accomodation/AccomodationForm"
 
 function App() {
   const dispatch = useDispatch();
-  const { errors, user } = useSelector((state) => state.user);
+  const { errors, user, isAuthenticated } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    // Check if user is logged in on app load
+    const token = localStorage.getItem('token');
+    if (token && !isAuthenticated) {
+      dispatch(currentUser());
+    }
+  }, [dispatch, isAuthenticated]);
 
   useEffect(() => {
     if (errors) {

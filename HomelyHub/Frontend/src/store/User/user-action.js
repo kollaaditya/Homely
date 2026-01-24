@@ -15,6 +15,10 @@ export const getLogin = (user) => async(dispatch) =>{
     try{
         dispatch(userActions.getLoginRequest());
         const {data} = await axiosInstance.post("/v1/rent/user/login", user);
+        // Store token in localStorage for cross-origin requests
+        if (data.token) {
+            localStorage.setItem('token', data.token);
+        }
         dispatch(userActions.getLoginDetails(data.user))
     }catch(error){
         dispatch(userActions.getError(error.response.data.message))
@@ -73,6 +77,8 @@ export const updatePassword = (passwords) => async(dispatch)=>{
 export const logout =() => async(dispatch) =>{
     try{
         await axiosInstance.get("/v1/rent/user/logout");
+        // Remove token from localStorage
+        localStorage.removeItem('token');
         dispatch(userActions.getLogout(null))
     }catch(error){
         dispatch(userActions.getError(error.response.data.message))
