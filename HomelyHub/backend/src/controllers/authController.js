@@ -59,17 +59,22 @@ const signinToken = a => {
                 'message': f['message']
             });
         }
-    }, logout = (a, b) => {
-        const c = {
-            'expires': new Date(0x0),
-            'httpOnly': !![],
-            'path': '/'
-        };
-        process['env']['NODE_ENV'] === 'production' ? (c['sameSite'] = 'none', c['secure'] = !![]) : (c['sameSite'] = 'lax', c['secure'] = ![]), b['cookie']('jwt', '', c), b['status'](0xc8)['json']({
-            'status': 'success',
-            'message': 'Logged\x20out\x20successfully'
-        });
-    }, protect = async (a, b, c) => {
+}, logout = (a, b) => {
+    const c = {
+        expires: new Date(0),
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/"
+    };
+
+    b.cookie('jwt', '', c);
+    b.status(200).json({
+        status: 'success',
+        message: 'Logged out successfully'
+    });
+},
+ protect = async (a, b, c) => {
         try {
             let d;
             if (a['headers']['authorization'] && a['headers']['authorization']['startsWith']('Bearer'))
